@@ -1,1 +1,2 @@
-# estuary-deploy
+
+Deploys Estuary on Smart Columbus OS
