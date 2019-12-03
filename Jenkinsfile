@@ -43,7 +43,7 @@ node ('infrastructure') {
     }
 }
 
-def deployTo(applicationName, environment, extraArgs = '') {
+def deployTo(applicationName, environment, extraArgs = '', version) {
     scos.withEksCredentials(environment) {
         sh("""#!/bin/bash
             set -e
@@ -51,10 +51,9 @@ def deployTo(applicationName, environment, extraArgs = '') {
             helm repo add scdp https://smartcitiesdata.github.io/charts
             helm repo update
             helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --version 0.1.1 \
+                --${verison} \
                 --namespace=streaming-services \
                 --values=${applicationName}.yaml \
-                --set aws.hostedFileBucket=${environment}-hosted-dataset-files \
                 ${extraArgs}
         """.trim())
     }
