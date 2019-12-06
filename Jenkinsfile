@@ -43,7 +43,7 @@ node ('infrastructure') {
     }
 }
 
-def deployTo(applicationName, environment, extraArgs = '', version) {
+def deployTo(applicationName, environment, extraArgs = '') {
     scos.withEksCredentials(environment) {
         sh("""#!/bin/bash
             set -e
@@ -51,7 +51,7 @@ def deployTo(applicationName, environment, extraArgs = '', version) {
             helm repo add scdp https://smartcitiesdata.github.io/charts
             helm repo update
             helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --${verison} \
+                --version 0.1.0 \
                 --namespace=streaming-services \
                 --values=${applicationName}.yaml \
                 ${extraArgs}
