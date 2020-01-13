@@ -51,7 +51,7 @@ def deployTo(applicationName, environment, extraArgs = '') {
             helm repo add scdp https://smartcitiesdata.github.io/charts
             helm repo update
             helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --version 0.3.1 \
+                --version 0.4.0 \
                 --namespace=streaming-services \
                 --values=${applicationName}.yaml \
                 ${extraArgs}
