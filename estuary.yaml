@@ -1,14 +1,14 @@
 replicaCount: 1
 
 image:
-  tag: 0.5.1
+  tag: 0.6.0
 
 resources:
   limits:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
 
 compactionSchedule: "00 01 * * *"
