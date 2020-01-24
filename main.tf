@@ -62,18 +62,20 @@ export KUBECONFIG=${local_file.kubeconfig.filename}
 export AWS_DEFAULT_REGION=us-east-2
 
 # checks to see if the secret value already exists in the environment and creates it if it doesnt
-kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep andi_lv_salt
+kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
 
 set +x
-[[ $? != 0 ]] && kubectl -n admin create secret generic andi_lv_salt --from-literal=salt=${random_string.andi_lv_salt.result} || echo "already exists"
+# checks to see if the secret value already exists in the environment and creates it if it doesnt
+kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
+[ $? != 0 ] && kubectl -n admin create secret generic estuary-lv-salt --from-literal=salt='${random_string.estuary_lv_salt.result}' || echo "already exists"
 set -x
 
 helm repo add scdp https://smartcitiesdata.github.io/charts
 helm repo update
-helm upgrade --install andi scdp/andi --namespace=admin \
+helm upgrade --install estuary scdp/estuary --namespace=admin \
     --version ${var.chartVersion} \
     --values ${local_file.helm_vars.filename} \
-    --values andi.yaml \
+    --values estuary.yaml \
       ${var.extraHelmCommandArgs}
 EOF
   }
