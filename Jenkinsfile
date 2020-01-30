@@ -24,7 +24,7 @@ node ('infrastructure') {
         scos.doCheckoutStage()
 
         doStageIfDeployingToDev('Deploy to Dev') {
-            deployTo(applicationName, 'dev', "--set image.tag=${env.DEV_IMAGE_TAG} --recreate-pods")
+            deployTo('dev', "--set image.tag=${env.DEV_IMAGE_TAG} --recreate-pods")
         }
 
         doStageIfMergedToMaster('Process Dev job') {
@@ -32,29 +32,25 @@ node ('infrastructure') {
         }
 
         doStageIfMergedToMaster('Deploy to Staging') {
-            deployTo(applicationName, 'staging')
+            deployTo('staging')
             scos.applyAndPushGitHubTag('staging')
         }
 
         doStageIfRelease('Deploy to Production') {
-            deployTo(applicationName, 'prod')
+            deployTo('prod')
             scos.applyAndPushGitHubTag('prod')
         }
     }
 }
 
-def deployTo(applicationName, environment, extraArgs = '') {
-    scos.withEksCredentials(environment) {
-        sh("""#!/bin/bash
-            set -e
-            helm init --client-only
-            helm repo add scdp https://smartcitiesdata.github.io/charts
-            helm repo update
-            helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --version 0.5.1 \
-                --namespace=streaming-services \
-                --values=${applicationName}.yaml \
-                ${extraArgs}
-        """.trim())
-    }
+
+def deployTo(environment, extraHelmCommandArgs = '') {
+    def extraVars = [
+        'extraHelmCommandArgs': extraHelmCommandArgs
+    ]
+
+    def terraform = scos.terraform(environment)
+    sh "terraform init && terraform workspace new ${environment}"
+    terraform.plan(terraform.defaultVarFile, extraVars)
+    terraform.apply()
 }
