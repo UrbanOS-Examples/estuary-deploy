@@ -11,5 +11,4 @@ resources:
     cpu: 100m
     memory: 256Mi
 
-compactionSchedule: "0 * * * *"
-#compactionSchedule: "00 01 * * *"
+compactionSchedule: "00 01 * * *"
