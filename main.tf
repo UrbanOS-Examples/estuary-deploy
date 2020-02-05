@@ -89,7 +89,7 @@ EOF
 
 variable "chartVersion" {
   description = "Version of the chart to deploy"
-  default     = "1.1.1"
+  default     = "0.5.1"
 }
 
 variable "is_internal" {

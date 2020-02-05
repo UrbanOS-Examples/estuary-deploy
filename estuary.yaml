@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  tag: 0.6.0
+  tag: 0.6.1
 
 resources:
   limits:
@@ -11,4 +11,4 @@ resources:
     cpu: 100m
     memory: 256Mi
 
-compactionSchedule: "00 01 * * *"
+compactionSchedule: "00 03 * * *"
