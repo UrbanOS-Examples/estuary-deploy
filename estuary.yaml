@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  tag: 0.6.1
+  tag: 0.6.2
 
 resources:
   limits:
