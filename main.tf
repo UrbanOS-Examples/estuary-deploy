@@ -72,7 +72,7 @@ set -x
 
 helm repo add scdp https://smartcitiesdata.github.io/charts
 helm repo update
-helm upgrade --install estuary scdp/estuary --namespace=admin \
+helm upgrade --install estuary scdp/estuary --namespace=streaming-services \
     --version ${var.chartVersion} \
     --values ${local_file.helm_vars.filename} \
     --values estuary.yaml \
