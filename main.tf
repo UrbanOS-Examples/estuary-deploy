@@ -67,7 +67,7 @@ kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estu
 set +x
 # checks to see if the secret value already exists in the environment and creates it if it doesnt
 kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
-[ $? != 0 ] && kubectl -n admin create secret generic estuary-lv-salt --from-literal=salt='${random_string.estuary_lv_salt.result}' || echo "already exists"
+[ $? != 0 ] && kubectl -n streaming-services create secret generic estuary-lv-salt --from-literal=salt='${random_string.estuary_lv_salt.result}' || echo "already exists"
 set -x
 
 helm repo add scdp https://smartcitiesdata.github.io/charts
