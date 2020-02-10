@@ -62,11 +62,11 @@ export KUBECONFIG=${local_file.kubeconfig.filename}
 export AWS_DEFAULT_REGION=us-east-2
 
 # checks to see if the secret value already exists in the environment and creates it if it doesnt
-kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
+kubectl -n streaming-services get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
 
 set +x
 # checks to see if the secret value already exists in the environment and creates it if it doesnt
-kubectl -n admin get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
+kubectl -n streaming-services get secrets -o jsonpath='{.items[*].metadata.name}' | grep estuary-lv-salt
 [ $? != 0 ] && kubectl -n streaming-services create secret generic estuary-lv-salt --from-literal=salt='${random_string.estuary_lv_salt.result}' || echo "already exists"
 set -x
 
