@@ -1,5 +1,5 @@
 provider "aws" {
-  version = "1.39"
+  version = "~> 3.0"
   region  = "${var.region}"
 
   assume_role {
