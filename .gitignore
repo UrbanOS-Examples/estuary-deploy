@@ -1,0 +1,14 @@
+# Terraform outputs
+.terraform/
+outputs/
+
+# Developer specified ignores
+plans/
+**/*.zip
+**/*.plan
+**/*.out
+**/terraform.*
+
+# Filesystem and editor ignores
+*.swp
+.DS_Store
