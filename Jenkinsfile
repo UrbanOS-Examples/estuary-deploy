@@ -1,5 +1,5 @@
 library(
-    identifier: 'pipeline-lib@4.6.1',
+    identifier: 'pipeline-lib@4.7.0',
     retriever: modernSCM([$class: 'GitSCMSource',
                           remote: 'https://github.com/SmartColumbusOS/pipeline-lib',
                           credentialsId: 'jenkins-github-user'])
@@ -24,7 +24,11 @@ node ('infrastructure') {
         scos.doCheckoutStage()
 
         doStageIfDeployingToDev('Deploy to Dev') {
-            deployTo('dev', "--set image.tag=${env.DEV_IMAGE_TAG} --recreate-pods")
+            deployTo(
+                environment: 'dev',
+                extraVars: [
+                    'extraHelmCommandArgs': "--set image.tag=${env.DEV_IMAGE_TAG} --recreate-pods"
+                ])
         }
 
         doStageIfMergedToMaster('Process Dev job') {
@@ -32,25 +36,24 @@ node ('infrastructure') {
         }
 
         doStageIfMergedToMaster('Deploy to Staging') {
-            deployTo('staging')
+            deployTo(environment: 'staging')
             scos.applyAndPushGitHubTag('staging')
         }
 
         doStageIfRelease('Deploy to Production') {
-            deployTo('prod')
+            deployTo(environment: 'prod')
             scos.applyAndPushGitHubTag('prod')
         }
     }
 }
 
 
-def deployTo(environment, extraHelmCommandArgs = '') {
-    def extraVars = [
-        'extraHelmCommandArgs': extraHelmCommandArgs
-    ]
+def deployTo(params = [:]) {
+    def environment = params.get('environment')
+    def extraVars = params.get('extraVars', [:])
 
     def terraform = scos.terraform(environment)
-    sh "terraform init && terraform workspace new ${environment}"
+    terraform.init()
     terraform.plan(terraform.defaultVarFile, extraVars)
     terraform.apply()
 }
