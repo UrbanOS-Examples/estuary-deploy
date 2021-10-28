@@ -74,7 +74,7 @@ kubectl -n streaming-services get secrets -o jsonpath='{.items[*].metadata.name}
 [ $? != 0 ] && kubectl -n streaming-services create secret generic estuary-lv-salt --from-literal=salt='${random_string.estuary_lv_salt.result}' || echo "already exists"
 set -x
 
-helm repo add scdp https://datastillery.github.io/charts
+helm repo add scdp https://urbanos-public.github.io/charts
 helm repo update
 helm upgrade --install estuary scdp/estuary --namespace=streaming-services \
     --version ${var.chartVersion} \
